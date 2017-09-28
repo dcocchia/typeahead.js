@@ -1,7 +1,7 @@
 /*!
  * typeahead.js 0.11.1
  * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 (function(root, factory) {
@@ -9,10 +9,10 @@
         define("bloodhound", [ "jquery" ], function(a0) {
             return root["Bloodhound"] = factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
-        root["Bloodhound"] = factory(jQuery);
+        root["Bloodhound"] = factory(root["jQuery"]);
     }
 })(this, function($) {
     var _ = function() {
@@ -922,10 +922,10 @@
         define("typeahead.js", [ "jquery" ], function(a0) {
             return factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
-        factory(jQuery);
+        factory(root["jQuery"]);
     }
 })(this, function($) {
     var _ = function() {
@@ -1948,7 +1948,7 @@
     var Typeahead = function() {
         "use strict";
         function Typeahead(o, www) {
-            var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
+            var onFocused, onBlurred, onEnterKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
             o = o || {};
             if (!o.input) {
                 $.error("missing input");
@@ -1973,7 +1973,6 @@
             onFocused = c(this, "activate", "open", "_onFocused");
             onBlurred = c(this, "deactivate", "_onBlurred");
             onEnterKeyed = c(this, "isActive", "isOpen", "_onEnterKeyed");
-            onTabKeyed = c(this, "isActive", "isOpen", "_onTabKeyed");
             onEscKeyed = c(this, "isActive", "_onEscKeyed");
             onUpKeyed = c(this, "isActive", "open", "_onUpKeyed");
             onDownKeyed = c(this, "isActive", "open", "_onDownKeyed");
@@ -1981,7 +1980,7 @@
             onRightKeyed = c(this, "isActive", "isOpen", "_onRightKeyed");
             onQueryChanged = c(this, "_openIfActive", "_onQueryChanged");
             onWhitespaceChanged = c(this, "_openIfActive", "_onWhitespaceChanged");
-            this.input.bind().onSync("focused", onFocused, this).onSync("blurred", onBlurred, this).onSync("enterKeyed", onEnterKeyed, this).onSync("tabKeyed", onTabKeyed, this).onSync("escKeyed", onEscKeyed, this).onSync("upKeyed", onUpKeyed, this).onSync("downKeyed", onDownKeyed, this).onSync("leftKeyed", onLeftKeyed, this).onSync("rightKeyed", onRightKeyed, this).onSync("queryChanged", onQueryChanged, this).onSync("whitespaceChanged", onWhitespaceChanged, this).onSync("langDirChanged", this._onLangDirChanged, this);
+            this.input.bind().onSync("focused", onFocused, this).onSync("blurred", onBlurred, this).onSync("enterKeyed", onEnterKeyed, this).onSync("escKeyed", onEscKeyed, this).onSync("upKeyed", onUpKeyed, this).onSync("downKeyed", onDownKeyed, this).onSync("leftKeyed", onLeftKeyed, this).onSync("rightKeyed", onRightKeyed, this).onSync("queryChanged", onQueryChanged, this).onSync("whitespaceChanged", onWhitespaceChanged, this).onSync("langDirChanged", this._onLangDirChanged, this);
         }
         _.mixin(Typeahead.prototype, {
             _hacks: function hacks() {
@@ -2036,14 +2035,6 @@
                 var $selectable;
                 if ($selectable = this.menu.getActiveSelectable()) {
                     this.select($selectable) && $e.preventDefault();
-                }
-            },
-            _onTabKeyed: function onTabKeyed(type, $e) {
-                var $selectable;
-                if ($selectable = this.menu.getActiveSelectable()) {
-                    this.select($selectable) && $e.preventDefault();
-                } else if ($selectable = this.menu.getTopSelectable()) {
-                    this.autocomplete($selectable) && $e.preventDefault();
                 }
             },
             _onEscKeyed: function onEscKeyed() {
