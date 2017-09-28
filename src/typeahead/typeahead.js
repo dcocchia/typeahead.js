@@ -11,7 +11,7 @@ var Typeahead = (function() {
   // -----------
 
   function Typeahead(o, www) {
-    var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed,
+    var onFocused, onBlurred, onEnterKeyed, onEscKeyed, onUpKeyed,
         onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged,
         onWhitespaceChanged;
 
@@ -60,7 +60,6 @@ var Typeahead = (function() {
     onFocused = c(this, 'activate', 'open', '_onFocused');
     onBlurred = c(this, 'deactivate', '_onBlurred');
     onEnterKeyed = c(this, 'isActive', 'isOpen', '_onEnterKeyed');
-    onTabKeyed = c(this, 'isActive', 'isOpen', '_onTabKeyed');
     onEscKeyed = c(this, 'isActive', '_onEscKeyed');
     onUpKeyed = c(this, 'isActive', 'open', '_onUpKeyed');
     onDownKeyed = c(this, 'isActive', 'open', '_onDownKeyed');
@@ -73,7 +72,6 @@ var Typeahead = (function() {
     .onSync('focused', onFocused, this)
     .onSync('blurred', onBlurred, this)
     .onSync('enterKeyed', onEnterKeyed, this)
-    .onSync('tabKeyed', onTabKeyed, this)
     .onSync('escKeyed', onEscKeyed, this)
     .onSync('upKeyed', onUpKeyed, this)
     .onSync('downKeyed', onDownKeyed, this)
@@ -163,18 +161,6 @@ var Typeahead = (function() {
 
       if ($selectable = this.menu.getActiveSelectable()) {
         this.select($selectable) && $e.preventDefault();
-      }
-    },
-
-    _onTabKeyed: function onTabKeyed(type, $e) {
-      var $selectable;
-
-      if ($selectable = this.menu.getActiveSelectable()) {
-        this.select($selectable) && $e.preventDefault();
-      }
-
-      else if ($selectable = this.menu.getTopSelectable()) {
-        this.autocomplete($selectable) && $e.preventDefault();
       }
     },
 
